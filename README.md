@@ -1,5 +1,5 @@
 # WebClient
-First attempts to learn MS SQL
+First attempts to learn MS SQL. (When creating an application, the WPF template is used)
 ## Platforms:
 * Windows
 ## Programs that were used:  
