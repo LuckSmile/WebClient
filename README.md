@@ -1,4 +1,4 @@
-# SQL
+# WebClient
 First attempts to learn MS SQL
 
 ## Programs that were used:  
