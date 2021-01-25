@@ -12,29 +12,15 @@ namespace SQL
     public class Database
     {
         private readonly string path = "";
-        private SqlConnection connection = null;
         public Database(string path)
         {
             this.path = path;
         }
-        public void Enable()
-        {
-            MessageBox.Show("Open");
-            this.connection = new SqlConnection(path);
-            this.connection.Open();
-        }
-        public void Disable()
-        {
-            MessageBox.Show("Close");
-            if (connection != null && connection.State != ConnectionState.Closed)
-                connection.Close();
-        }
         public Column[] Reader(string table, string column = null)
         {
             List<Column> answer = new List<Column>();
-            using (SqlConnection connection = this.connection)
+            using (SqlConnection connection = new SqlConnection(path))
             {
-                Enable();
                 SqlCommand command = new SqlCommand($"SELECT * FROM [{table}]", connection);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -65,8 +51,7 @@ namespace SQL
         public string[] GetColumn(string table)
         {
             List<string> answer = new List<string>();
-            Enable();
-            using (SqlConnection connection = this.connection)
+            using (SqlConnection connection = new SqlConnection(path))
             {
                 SqlCommand command = new SqlCommand($"SELECT * FROM [{table}]", connection);
                 using (SqlDataReader reader = command.ExecuteReader())
