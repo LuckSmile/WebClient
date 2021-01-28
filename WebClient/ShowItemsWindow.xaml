@@ -32,11 +32,33 @@
                 <TextBox x:Name="Constraint" MinHeight="30" MinWidth="100" TextChanged="InputConstraint"/>
             </StackPanel>
             <Grid Grid.Row="1" Grid.Column="1">
-                <StackPanel Orientation="Vertical" x:Name="SubjectsContent">
-                    <!--StackPanel Orientation="Horizontal" HorizontalAlignment="Center" MinHeight="100" Margin="0, 5, 0, 0" Background="DarkGoldenrod">
-                        <Grid Background="BurlyWood" MinHeight="100" MinWidth="30" />
-                        <Grid Background="BurlyWood" MinHeight="100" MinWidth="30" Margin="5, 0, 0, 0" />
-                    </StackPanel-->
+                <StackPanel Orientation="Vertical" x:Name="SubjectsContent" VerticalAlignment="Top">
+                    <!--Grid Height="180" Width="160" Margin="5, 0, 5, 0">
+                            <Grid Background="Black"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="1"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1"/>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="1"/>
+                                </Grid.RowDefinitions>
+                                <Grid Background="White" Grid.Row="1" Grid.Column="1"/>
+                                <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
+                                    <Image Height="110" Width="110"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button IsEnabled="False" MinHeight="10" MinWidth="10" Margin="2, 0, 2, 0"/>
+                                        <Button MinHeight="10" MinWidth="10" Margin="2, 0, 2, 0"/>
+                                        <Button MinHeight="10" MinWidth="10" Margin="2, 0, 2, 0"/>
+                                        <Button MinHeight="10" MinWidth="10" Margin="2, 0, 2, 0"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Наименование товара 1500 рублей" Width="150" TextWrapping="Wrap" FontSize="12" TextAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid-->
                 </StackPanel>
             </Grid>
         </Grid>
