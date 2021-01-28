@@ -27,7 +27,6 @@
                 <TextBox x:Name="SpacingX" MinHeight="30" MinWidth="100" TextChanged="InputSpacing"/>
                 <Label Content="y:" MinHeight="30"/>
                 <TextBox x:Name="SpacingY" MinHeight="30" MinWidth="100" TextChanged="InputSpacing"/>
-
                 <Label Content="Constraint" MinHeight="30"/>
                 <TextBox x:Name="Constraint" MinHeight="30" MinWidth="100" TextChanged="InputConstraint"/>
             </StackPanel>
