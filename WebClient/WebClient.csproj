@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Item.cs" />
     <Compile Include="Layout\GridLayoutGroup.cs" />
     <Compile Include="Layout\Vector2.cs" />
     <Compile Include="ShowItemsWindow.xaml.cs">
