@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -11,11 +12,61 @@ namespace WebClient
     public class Item
     {
         public Grid Body => body;
+        public DataElements Data
+        {
+            get => data;
+            set
+            {
+                image.Source = value.Images[0];
+                for(int index = 0; index < value.Images.Length - buttons.Count; index++)
+                {
+                    Button button = new Button
+                    {
+                        Height = 10,
+                        Width = 10,
+                        Margin = new System.Windows.Thickness(2, 0, 2, 0)
+                    };
+                    contentButtons.Children.Add(button);
+                    buttons.Add(button);
+                    index = 0;
+                }
+                for(int index = 0; index < buttons.Count - value.Images.Length; index++)
+                {
+                    Button button = buttons[0];
+                    contentButtons.Children.Remove(button);
+                    buttons.RemoveAt(0);
+                    index = 0;
+                }
+                for(int index = 0; index < value.Images.Length; index++)
+                {
+                    Button button = buttons[index];
+                    ImageSource imageSource = value.Images[index];
+                    ///TODO: 100% будет ошибка
+                    button.Click += (object sender, RoutedEventArgs e) =>
+                    {
+                        if(selected != null)
+                        {
+                            selected.IsEnabled = true;
+                        }
+                        button.IsEnabled = false;
+                        image.Source = imageSource;
+                    };
+                }
+                text.Text = $"{value.Title}\n" +
+                    $"{value.Price} {value.Currency}";
+            }
+        }
+
+        private DataElements data = new DataElements("", 0, "", null);
+        private Button selected = null;
+        
         private readonly Grid body = null;
         private readonly Image image = null;
         private readonly StackPanel contentButtons = null;
         private readonly TextBlock text = null;
-        public Item()
+        private readonly List<Button> buttons = null;
+
+        public Item(DataElements data)
         {
             body = new Grid();
             {
@@ -78,9 +129,30 @@ namespace WebClient
 
                         markup.Children.Add(content);
                     }
-                    
+                    buttons = new List<Button>();
                     body.Children.Add(markup);
                 }
+            }
+            this.Data = data;
+        }
+        public struct DataElements
+        {
+            public string Title => title;
+            public int Price => price;
+            public string Currency => currency;
+            public ImageSource[] Images => images;
+
+            private readonly string title;
+            private readonly int price;
+            private readonly string currency;
+            private readonly ImageSource[] images;
+
+            public DataElements(string title, int price, string currency, ImageSource[] images)
+            {
+                this.title = title;
+                this.price = price;
+                this.currency = currency;
+                this.images = images;
             }
         }
     }
