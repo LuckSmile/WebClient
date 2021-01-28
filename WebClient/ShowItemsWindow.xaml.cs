@@ -26,7 +26,7 @@ namespace WebClient
         {
             InitializeComponent();
             layoutGroup = new GridLayoutGroup(SubjectsContent, new Vector2(30, 100f), new Vector2(5, 5));
-            for (int index = 0; index < 10; index++)
+            for (int index = 0; index < 3; index++)
             {
                 Grid subject = new Grid
                 {
@@ -34,11 +34,35 @@ namespace WebClient
                 };
                 layoutGroup.Add(subject);
             }
+            SizeCellX.Text = "" + layoutGroup.CellSize.x;
+            SizeCellY.Text = "" + layoutGroup.CellSize.y;
+            SpacingX.Text = "" + layoutGroup.Spacing.x;
+            SpacingY.Text = "" + layoutGroup.Spacing.y;
+            Constraint.Text = "" + layoutGroup.Constraint;
         }
 
         private void InputSizeCell(object sender, TextChangedEventArgs e)
         {
-            MessageBox.Show(e.Source.ToString());
+            TextBox textBox = e.Source as TextBox;
+            if (int.TryParse(textBox.Text, out int number))
+            {
+                number = number <= 0 ? 1 : number;
+                if (textBox == SizeCellX)
+                {
+                    if (layoutGroup.CellSize.x != number)
+                        layoutGroup.CellSize = new Vector2(number, layoutGroup.CellSize.y);
+                }
+                else if (textBox == SizeCellY)
+                {
+                    if (layoutGroup.CellSize.y != number)
+                        layoutGroup.CellSize = new Vector2(layoutGroup.CellSize.x, number);
+                }
+            }
+            else
+            {
+                textBox.Text = textBox.Text.Length - 1 >= 0 ? textBox.Text.Remove(textBox.Text.Length - 1) : "";
+            }
+            textBox.SelectionStart = textBox.Text.Length;
         }
         private void InputSpacing(object sender, TextChangedEventArgs e)
         {
@@ -56,6 +80,21 @@ namespace WebClient
                     if (layoutGroup.Spacing.y != number)
                         layoutGroup.Spacing = new Vector2(layoutGroup.Spacing.x, number);
                 }
+            }
+            else
+            {
+                textBox.Text = textBox.Text.Length - 1 >= 0 ? textBox.Text.Remove(textBox.Text.Length - 1) : "";
+            }
+            textBox.SelectionStart = textBox.Text.Length;
+        }
+        private void InputConstraint(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = e.Source as TextBox;
+            if (int.TryParse(textBox.Text, out int number))
+            {
+                number = number <= 0 ? 1 : number;
+                if (layoutGroup.Constraint != number)
+                    layoutGroup.Constraint = number;
             }
             else
             {
