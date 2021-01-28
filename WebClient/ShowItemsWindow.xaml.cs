@@ -25,14 +25,11 @@ namespace WebClient
         public ShowItemsWindow()
         {
             InitializeComponent();
-            layoutGroup = new GridLayoutGroup(SubjectsContent, new Vector2(30, 100f), new Vector2(5, 5));
-            for (int index = 0; index < 3; index++)
+            layoutGroup = new GridLayoutGroup(SubjectsContent, new Vector2(160, 180f), new Vector2(5, 5));
+            for (int index = 0; index < 10; index++)
             {
-                Grid subject = new Grid
-                {
-                    Background = Brushes.BurlyWood
-                };
-                layoutGroup.Add(subject);
+                Item item = new Item();
+                layoutGroup.Add(item.Body);
             }
             SizeCellX.Text = "" + layoutGroup.CellSize.x;
             SizeCellY.Text = "" + layoutGroup.CellSize.y;
