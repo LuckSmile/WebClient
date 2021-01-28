@@ -17,19 +17,26 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                 <Label Content="SizeCell" MinHeight="30"/>
-                <TextBox MinHeight="30" MinWidth ="100" TextChanged="InputSizeCell"/>
+                <Label Content="x:" MinHeight="30"/>
+                <TextBox x:Name="SizeCellX" MinHeight="30" MinWidth="100" TextChanged="InputSizeCell"/>
+                <Label Content="y:" MinHeight="30"/>
+                <TextBox x:Name="SizeCellY" MinHeight="30" MinWidth="100" TextChanged="InputSizeCell"/>
+                
                 <Label Content="Spacing" MinHeight="30"/>
                 <Label Content="x:" MinHeight="30"/>
                 <TextBox x:Name="SpacingX" MinHeight="30" MinWidth="100" TextChanged="InputSpacing"/>
                 <Label Content="y:" MinHeight="30"/>
                 <TextBox x:Name="SpacingY" MinHeight="30" MinWidth="100" TextChanged="InputSpacing"/>
+
+                <Label Content="Constraint" MinHeight="30"/>
+                <TextBox x:Name="Constraint" MinHeight="30" MinWidth="100" TextChanged="InputConstraint"/>
             </StackPanel>
             <Grid Grid.Row="1" Grid.Column="1">
                 <StackPanel Orientation="Vertical" x:Name="SubjectsContent">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" MinHeight="100" Margin="0, 5, 0, 0" Background="DarkGoldenrod">
+                    <!--StackPanel Orientation="Horizontal" HorizontalAlignment="Center" MinHeight="100" Margin="0, 5, 0, 0" Background="DarkGoldenrod">
                         <Grid Background="BurlyWood" MinHeight="100" MinWidth="30" />
                         <Grid Background="BurlyWood" MinHeight="100" MinWidth="30" Margin="5, 0, 0, 0" />
-                    </StackPanel>
+                    </StackPanel-->
                 </StackPanel>
             </Grid>
         </Grid>
