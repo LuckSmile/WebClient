@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace WebClient
 {
@@ -17,47 +19,48 @@ namespace WebClient
             get => data;
             set
             {
-                image.Source = value.Images[0];
-                for(int index = 0; index < value.Images.Length - buttons.Count; index++)
-                {
-                    Button button = new Button
-                    {
-                        Height = 10,
-                        Width = 10,
-                        Margin = new System.Windows.Thickness(2, 0, 2, 0)
-                    };
-                    contentButtons.Children.Add(button);
-                    buttons.Add(button);
-                    index = 0;
-                }
-                for(int index = 0; index < buttons.Count - value.Images.Length; index++)
-                {
-                    Button button = buttons[0];
-                    contentButtons.Children.Remove(button);
-                    buttons.RemoveAt(0);
-                    index = 0;
-                }
-                for(int index = 0; index < value.Images.Length; index++)
-                {
-                    Button button = buttons[index];
-                    ImageSource imageSource = value.Images[index];
-                    ///TODO: 100% будет ошибка
-                    button.Click += (object sender, RoutedEventArgs e) =>
-                    {
-                        if(selected != null)
-                        {
-                            selected.IsEnabled = true;
-                        }
-                        button.IsEnabled = false;
-                        image.Source = imageSource;
-                    };
-                }
+                image.Source = value.Image;
+                //for (int index = 0; index < value.Images.Length - buttons.Count; index++)
+                //{
+                //    Button button = new Button
+                //    {
+                //        Height = 10,
+                //        Width = 10,
+                //        Margin = new System.Windows.Thickness(2, 0, 2, 0)
+                //    };
+                //    contentButtons.Children.Add(button);
+                //    buttons.Add(button);
+                //    index = 0;
+                //}
+                //for (int index = 0; index < buttons.Count - value.Images.Length; index++)
+                //{
+                //    Button button = buttons[0];
+                //    contentButtons.Children.Remove(button);
+                //    buttons.RemoveAt(0);
+                //    index = 0;
+                //}
+                //for (int index = 0; index < value.Images.Length; index++)
+                //{
+                //    Button button = buttons[index];
+                //    ImageSource imageSource = value.Images[index];
+                //    ///TODO: 100% будет ошибка
+                //    button.Click += (object sender, RoutedEventArgs e) =>
+                //    {
+                //        if (selected != null)
+                //        {
+                //            selected.IsEnabled = true;
+                //        }
+                //        button.IsEnabled = false;
+                //        //image.Source = imageSource;
+                //    };
+                //}
                 text.Text = $"{value.Title}\n" +
                     $"{value.Price} {value.Currency}";
+                data = value;
             }
         }
 
-        private DataElements data = new DataElements("", 0, "", null);
+        private DataElements data;
         private Button selected = null;
         
         private readonly Grid body = null;
@@ -109,7 +112,7 @@ namespace WebClient
                             image.Width = 110f;
                             content.Children.Add(image);
                         }
-                        
+
                         contentButtons = new StackPanel();
                         {
                             contentButtons.Orientation = Orientation.Horizontal;
@@ -140,19 +143,35 @@ namespace WebClient
             public string Title => title;
             public int Price => price;
             public string Currency => currency;
-            public ImageSource[] Images => images;
+            public ImageSource Image => image;
 
             private readonly string title;
             private readonly int price;
             private readonly string currency;
-            private readonly ImageSource[] images;
+            private readonly ImageSource image;
 
-            public DataElements(string title, int price, string currency, ImageSource[] images)
+            public DataElements(string title, int price, string currency, string image)
             {
                 this.title = title;
                 this.price = price;
                 this.currency = currency;
-                this.images = images;
+                this.image = StringToBitmapSource(title,image);
+            }
+        }
+        private static BitmapSource StringToBitmapSource(string title, string text)
+        {
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(text);
+                using (MemoryStream ms = new MemoryStream(bytes))
+                {
+                    var decoder = BitmapDecoder.Create(ms, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+                    return decoder.Frames[0];
+                }
+            }
+            catch(Exception)
+            {
+                return null;
             }
         }
     }
