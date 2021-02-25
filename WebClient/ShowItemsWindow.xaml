@@ -31,8 +31,9 @@
                 <TextBox x:Name="Constraint" MinHeight="30" MinWidth="100" TextChanged="InputConstraint"/>
             </StackPanel>
             <Grid Grid.Row="1" Grid.Column="1">
-                <StackPanel Orientation="Vertical" x:Name="SubjectsContent" VerticalAlignment="Top">
-                    <!--Grid Height="180" Width="160" Margin="5, 0, 5, 0">
+                <ScrollViewer>
+                    <StackPanel Orientation="Vertical" x:Name="SubjectsContent" VerticalAlignment="Top" HorizontalAlignment="Center">
+                        <Grid Height="180" Width="160" Margin="5, 0, 5, 0">
                             <Grid Background="Black"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -57,8 +58,9 @@
                                     <TextBlock Text="Наименование товара 1500 рублей" Width="150" TextWrapping="Wrap" FontSize="12" TextAlignment="Center"/>
                                 </StackPanel>
                             </Grid>
-                        </Grid-->
-                </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
         </Grid>
     </Grid>
