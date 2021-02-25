@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace WebClient
 {
@@ -26,11 +27,25 @@ namespace WebClient
         {
             InitializeComponent();
             layoutGroup = new GridLayoutGroup(SubjectsContent, new Vector2(160, 180f), new Vector2(5, 5));
-            for (int index = 0; index < 10; index++)
+            //SQL.Database database = new SQL.Database(@"Data Source=DESKTOP-KAQ3KMV\SQLEXPRESS;Initial Catalog=BD;Integrated Security=True");
+            SQL.Database database = new SQL.Database(@"Server=DESKTOP-KAQ3KMV;Database=BD;User Id=admin;Password=admin");
+            //SQL.Database database = new SQL.Database(@"Data Source=192.168.137.149, 1433;Initial Catalog=BD;Integrated Security=True");
+            SQL.Line[] products = database.Reader("Product");
+            for(int index = 0; index < products.Length; index++)
             {
-                Item item = new Item();
+                SQL.Line product = products[index];
+                Item item = new Item(new Item.DataElements(title:product.Columns["Title"].Value, 
+                                                            price:int.Parse(product.Columns["Cost"].Value.Remove(product.Columns["Cost"].Value.IndexOf(','))), 
+                                                            currency:"руб", 
+                                                            image:product.Columns["MainImagePath"].Value));
                 layoutGroup.Add(item.Body);
             }
+            //for (int index = 0; index < 10; index++)
+            //{
+            //    Item item = new Item(new Item.DataElements("123", 120, "рублей", new ImageSource[] { source }));
+            //    layoutGroup.Add(item.Body);
+            //}
+
             SizeCellX.Text = "" + layoutGroup.CellSize.x;
             SizeCellY.Text = "" + layoutGroup.CellSize.y;
             SpacingX.Text = "" + layoutGroup.Spacing.x;
