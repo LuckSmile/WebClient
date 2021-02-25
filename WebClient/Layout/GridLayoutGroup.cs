@@ -42,12 +42,12 @@ namespace WebClient.Layout
                 for(int index = 0; index < panels.Count; index++)
                 {
                     StackPanel panel = panels[index];
-                    panel.MinHeight = cellSize.y;
+                    panel.Height = cellSize.y;
                     for (int indexChild = 0; indexChild < panel.Children.Count; indexChild++)
                     {
                         Grid grid = panel.Children[indexChild] as Grid;
-                        grid.MinHeight = cellSize.y;
-                        grid.MinWidth = cellSize.x;
+                        grid.Height = cellSize.y;
+                        grid.Width = cellSize.x;
                     }
                 }
             }
@@ -75,57 +75,67 @@ namespace WebClient.Layout
             set
             {
                 constraint = value;
-                int count = Convert.ToInt32(Math.Ceiling(childs.Count / (constraint * 1f)));
+           
+                int count = Convert.ToInt32(Math.Ceiling(childs.Count / (float)constraint));
+                panels.ForEach((x) => x.Children.Clear());
 
-                for (int index = 0; index < panels.Count; index++)
+                if (count - panels.Count < 0)
                 {
-                    StackPanel panel = panels[index];
-                    for (int indexChild = 0; indexChild < panel.Children.Count; indexChild++)
+
+                    MessageBox.Show("Remove: " + (panels.Count - count));
+                    for (int index = panels.Count - count; index > 0; index--)
                     {
-                        Grid grid = panel.Children[indexChild] as Grid;
-                        panel.Children.Remove(grid);
-                        indexChild--;
+                        this.RemovePanel();
                     }
-                }
-                if (count > panels.Count)
-                {
-                    for (int index = 0; index < count - panels.Count; index++)
-                        CreatePanel();
+                    MessageBox.Show("Panels: " + panels.Count + " " + panel.Children.Count);
                 }
                 else
                 {
-                    for (int index = panels.Count - 1; index < panels.Count - count; index--)
+                    for(int index = count - panels.Count; index >= 0; index--)
                     {
-                        RemovePanel(panels[index]);
-                        index--;
+                        this.CreatePanel();
                     }
                 }
 
+
+                StackPanel[] sort = panels.OrderBy(x => this.panel.Children.IndexOf(x)).ToArray();
+                panels.Clear();
+                panels.AddRange(sort);
+
                 List<Grid> grids = new List<Grid>();
-                grids.AddRange(this.childs.ToArray());
-                for(int index = 0; index < panels.Count; index++)
+                grids.AddRange(childs);
+                childs.Clear();
+
+                for (int index = 0; index < grids.Count; index++)
                 {
-                    if (grids.Count == 0)
-                        break;
-                    StackPanel panel = panels[index];
-                    for(int indexChild = 0; indexChild < constraint; indexChild++)
+                    Grid grid = grids[index];
+                    if (selected.Children.Count >= constraint)
                     {
-                        Grid grid = grids[0];
-                        panel.Children.Add(grid);
-                        grids.RemoveAt(0);
-                        if (grids.Count == 0)
-                            break;
+                        for (int indexPanel = 0; indexPanel < panels.Count; indexPanel++)
+                        {
+                            StackPanel panel = panels[indexPanel];
+                            if (panel.Children.Count < constraint)
+                            {
+                                selected = panel;
+                                break;
+                            }
+                        }
                     }
+                    this.Add(grid);
                 }
+
                 this.CellSize = cellSize;
                 this.Spacing = spacing;
+
+
+                MessageBox.Show(panels.Count + " " + panel.Children.Count);
             }
         }
 
         private Vector2 cellSize = Vector2.Zero;
         private Vector2 spacing = Vector2.Zero;
 
-        private int constraint = 2;
+        private int constraint = 5;
         
         private System.Windows.HorizontalAlignment horizontalAlignment = System.Windows.HorizontalAlignment.Center;
 
@@ -145,6 +155,23 @@ namespace WebClient.Layout
         }
         public void Add(Grid grid)
         {
+            if (selected.Children.Count >= constraint)
+            {
+                bool isSetSelected = false;
+                for (int index = 0; index < panels.Count; index++)
+                {
+                    StackPanel panel = panels[index];
+                    if (panel.Children.Count < constraint)
+                    {
+                        isSetSelected = true;
+                        selected = panel;
+                        break;
+                    }
+                }
+                if (isSetSelected == false)
+                    selected = CreatePanel();
+            }
+
             grid.MinHeight = cellSize.y;
             grid.MinWidth = cellSize.x;
 
@@ -152,11 +179,6 @@ namespace WebClient.Layout
 
             childs.Add(grid);
             selected.Children.Add(grid);
-            
-            if(selected.Children.Count >= constraint)
-            {
-                selected = CreatePanel();
-            }
         }
         private StackPanel CreatePanel()
         {
@@ -173,11 +195,10 @@ namespace WebClient.Layout
 
             return answer;
         }
-        private void RemovePanel(StackPanel panel)
+        private void RemovePanel()
         {
-            panel.Children.Remove(panel);
-            panels.Remove(panel);
-            MessageBox.Show("" + panel.Children.Count);
+            this.panel.Children.RemoveAt(0);
+            panels.RemoveAt(0);
         }
     }
 }
