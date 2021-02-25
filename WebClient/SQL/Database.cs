@@ -16,32 +16,29 @@ namespace SQL
         {
             this.path = path;
         }
-        public Column[] Reader(string table, string column = null)
+        public Line[] Reader(string table)
         {
-            List<Column> answer = new List<Column>();
+            List<Line> answer = new List<Line>();
             using (SqlConnection connection = new SqlConnection(path))
             {
+                connection.Open();
                 SqlCommand command = new SqlCommand($"SELECT * FROM [{table}]", connection);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.HasRows)
                     {
                         List<string> search = new List<string>();
-                        if (column != null)
-                        {
-                            search.Add(column);
-                        }
-                        else
-                        {
-                            search.AddRange(GetColumn(table));
-                        }
+                        search.AddRange(GetColumn(table));
                         while (reader.Read())
                         {
+                            List<Column> columns = new List<Column>();
                             for (int index = 0; index < search.Count; index++)
                             {
+                                string title = search[index];
                                 string result = Convert.ToString(reader[search[index]]);
-                                answer.Add(new Column(column, result, table));
+                                columns.Add(new Column(title, result, table));
                             }
+                            answer.Add(new Line(columns.ToArray()));
                         }
                     }
                 }
@@ -53,6 +50,7 @@ namespace SQL
             List<string> answer = new List<string>();
             using (SqlConnection connection = new SqlConnection(path))
             {
+                connection.Open();
                 SqlCommand command = new SqlCommand($"SELECT * FROM [{table}]", connection);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
